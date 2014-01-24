@@ -59,7 +59,7 @@
         <h3 class="panel-title">Category Chart</h3>
       </div>
       <div class="panel-body" style="text-align:center">
-        
+        <center>
         <!--
   	
     Generating Counters Dynamically using LOOKUP from the database.
@@ -70,10 +70,23 @@
 		//include "headers/checkloginstatus.php";
 	
 	require 'include/connect.inc.php';
-	$query = "SELECT * FROM category";
-	$result = mysql_query($query);
-	$count = mysql_num_rows($result);
+
+        mysql_query("SET NAMES 'utf8'");
+        mysql_query("SET CHARACTER_SET 'utf8'"); 
 	
+        $query = "SELECT * FROM category";
+		$result = mysql_query($query);
+		$count = mysql_num_rows($result);
+		
+		/*
+			Getting total number of tuples in questions table.
+		*/
+		
+		$query_totalQuestion = "SELECT * FROM question";
+		$result_totalQuestion = mysql_query($query_totalQuestion);
+		$totalCount_totalQuestion = mysql_num_rows($result_totalQuestion);
+		//echo "total Count " . $totalCount_totalQuestion . "<br/>";
+		
 	
 	while($row = mysql_fetch_array($result))
 	{
@@ -85,6 +98,21 @@
 		$result_qsCount = mysql_query($query_qsCount);
 		$count = mysql_num_rows($result_qsCount);
 		
+		//echo "Count -- >" . $count . "<br/>";
+		
+		if($count!=0)
+		{
+				$percent = percent($count,$totalCount_totalQuestion);
+				//echo $percent. " ";
+		}
+		else
+		{
+			$percent = 0;
+		}
+		
+		
+		
+		
 		if($id%2==0)
 		{
 			$color = "#61a9dc";
@@ -94,18 +122,31 @@
 			$color = "#7ea568";
 		}
 		
+		
+		
 		echo "
-		<div id='myStat{$id}' data-dimension='250' data-text='$count' data-info='{$category}' data-width='30' data-fontsize='38' data-percent='{$count}' data-fgcolor='{$color}' data-bgcolor='#eee' data-fill='#ddd'></div>
+		<div id='myStat{$id}' data-dimension='250' data-text='{$percent}%' data-info='{$category}' data-width='30' data-fontsize='38' data-percent='{$percent}' data-fgcolor='{$color}' data-bgcolor='#eee' data-fill='#ddd'></div>
 			  ";
 			  
 		  if(($id)%3 == 0)
 		  {
 			  echo "<br style='clear:both' />";
 		  }
-	
+		
+		
+		
 	
 		
 	}
+	
+	
+	function percent($num_amount, $num_total) {
+		$count1 = $num_amount / $num_total;
+		$count2 = $count1 * 100;
+		$count = number_format($count2, 0);
+		return  $count;
+}
+	
 	
 ?>
         
@@ -122,7 +163,7 @@
     <div id="myStat5" data-dimension="250" data-text="35%" data-info="New Clients" data-width="30" data-fontsize="38" data-percent="35" data-fgcolor="#7ea568" data-bgcolor="#eee" data-fill="#ddd"></div>
     
     <div id="myStat6" data-dimension="250" data-text="35%" data-info="New Clients" data-width="30" data-fontsize="38" data-percent="35" data-fgcolor="#7ea568" data-bgcolor="#eee" data-fill="#ddd"></div> --> 
-        
+        </center>
       </div>
     </div>
   </div>
