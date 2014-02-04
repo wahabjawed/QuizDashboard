@@ -2,9 +2,7 @@
 
 include 'headers/connect_to_mysql.php';
 include "headers/checkloginstatus.php";
-mysql_query("SET NAMES 'utf8'");
 
-mysql_query("SET CHARACTER_SET 'utf8'");  
 if($_POST)
 	{
 	
@@ -15,15 +13,15 @@ if($_POST)
 	$option4=$_POST['optionFour'];
 
 	$query = "UPDATE question SET question='".$question."',option1='".$option1."',option2='".$option2."',option3='".$option3."',option4='".$option4."' WHERE questionID='".$_GET["id"]."'"; 
-$result =mysql_query($query)
+$result =mysqli_query($con,$query)
 or die("Error querying database.");
 header("location:question.php");
 
 	}
 
- $data = mysql_query("SELECT * FROM question where questionID ='".$_GET["id"]."'") 
- or die(mysql_error());  
- while($info = mysql_fetch_array( $data )) 
+ $data = mysqli_query($con,"SELECT * FROM question where questionID ='".$_GET["id"]."'") 
+ or die(mysqli_error());  
+ while($info = mysqli_fetch_array( $data )) 
  { 
 	$ques=$info["question"];
 	$opt1=$info['option1'];
