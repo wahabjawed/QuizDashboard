@@ -3,16 +3,25 @@
 include 'headers/connect_to_mysql.php';
 include "headers/checkloginstatus.php";
 
+
+
 if($_POST)
 	{
+	include 'headers/image_upload.php';
 	
 	$question=$_POST['question'];
 	$option1=$_POST['optionOne'];
 	$option2=$_POST['optionTwo'];
 	$option3=$_POST['optionThree'];
 	$option4=$_POST['optionFour'];
+	$correctop=$_POST['correct'];
+	
+	if(empty($profilePic)){
+		$imgGet = $_GET['img'];
+		$profilePic = $imgGet;
+		}
 
-	$query = "UPDATE question SET question='".$question."',option1='".$option1."',option2='".$option2."',option3='".$option3."',option4='".$option4."' WHERE questionID='".$_GET["id"]."'"; 
+	$query = "UPDATE question SET question='".$question."',option1='".$option1."',option2='".$option2."',option3='".$option3."',option4='".$option4."',correct='".$correctop."',qimage='".$profilePic."' WHERE questionID='".$_GET["id"]."'"; 
 $result =mysqli_query($con,$query)
 or die("Error querying database.");
 header("location:question.php");
@@ -29,7 +38,9 @@ header("location:question.php");
 	$opt3=$info['option3'];
 	$opt4=$info['option4'];
 	$correct=$info['correct'];
+	$img=$info['qimage'];
 	$categoryid=$info['categoryID'];
+	
 
  } 
 
@@ -97,7 +108,7 @@ header("location:question.php");
     <div style="text-align:center">
       <h1>Update Question</h1>
     </div>
-    <form role="form" enctype="multipart/form-data" method="post" action="updateQuestion.php?id=<?php echo $_GET['id']; ?>">
+    <form role="form" enctype="multipart/form-data" method="post" action="updateQuestion.php?id=<?php echo $_GET['id']; ?>&img=<?php echo $_GET['img'];?>">
       <div class="form-group">
         <label for="element_1">Question </label>
         <input type="textarea" name= "question" class="form-control" id="element_1" value="<?php echo $ques; ?>"  rows="3">
@@ -138,7 +149,17 @@ header("location:question.php");
           <input type="radio" name="correct" style="float:none;" id="optionsRadios4" value="4"  <?php echo ($correct=='4')?'checked':'' ?>>
           Option Four </label>
       </div>
-      
+	  <div>
+	  <?php
+	  if(!empty($img)){
+		echo "<img src='assets/upload/{$img}' width='150'/>";
+		}
+		?>
+		</div>
+      <div class="form-group">
+        <label for="exampleInputFile">Update Question Picture</label>
+        <input type="file" name="file" id="exampleInputFile">
+      </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
   </div>

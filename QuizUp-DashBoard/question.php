@@ -53,18 +53,15 @@ function resets(){
 	function deleteConfirm(id)
 	{
 		var result = confirm("Want to delete?");
-		alert(id);
+		
 		if(result == true)
 		{	
 			this.document.deleteForm.action = "delete.php?id="+id+"&type=question";
-				alert(deleteForm.action);
+			
 			this.document.deleteForm.submit();
-			return true;
-		}
-		else
-		{	
-			return false;
-			alert("No Selected");	
+		
+	
+			
 		}
 		
 	}	

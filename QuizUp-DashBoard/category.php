@@ -58,12 +58,7 @@ function resets(){
 		{	
 			document.deleteForm.action = "delete.php?id="+id+"&type=category";
 			document.deleteForm.submit();
-			return true;
-		}
-		else
-		{	
-			return false;
-			alert("No Selected");	
+				
 		}
 		
 	}
